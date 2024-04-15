@@ -28,8 +28,6 @@ import { useStore } from "vuex";
 
 const store = useStore();
 const isLoading = computed(() => store.state.isLoading);
-
-
 </script>
 <style>
 .loader {

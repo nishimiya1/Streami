@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import homeLayout from "../components/homeLayout.vue";
 import Home from "../views/Home.vue";
-import searchResult from "../views/searchResult.vue";
 
 const routes = [
   {
@@ -12,11 +11,6 @@ const routes = [
         path: "/",
         name: "home",
         component: Home,
-      },
-      {
-        path: "/search/:keyword?",
-        name: "searchResult",
-        component: searchResult,
       },
 
       {
@@ -34,11 +28,7 @@ const routes = [
         name: "generator",
         component: () => import("../views/generator.vue"),
       },
-      {
-        path: "/generator/channel=:channelId",
-        name: "channelInfo",
-        component: () => import("../views/channelInfo.vue"),
-      },
+
       {
         path: "/archive/watch=:id?",
         name: "videoInfo",

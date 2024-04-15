@@ -9,18 +9,17 @@
       <button class="uppercase">Previous</button>
       <button class="uppercase">Next</button>
     </div>
-    <div class style="opacity: 1; transform: none">
+    <div style="opacity: 1; transform: none">
       <div
         class="mt-6 grid grid-cols-1 md:grid-cols-5 gap-4 lg:gap-9 md:h-[calc(100vw-75.694vw)]"
       >
         <RouterLink
-          class="w-full h-24 md:h-full rounded relative cursor-pointer group bg-center bg-cover block"
-          v-for="items of items"
-          :key="items.id"
-          :to="{ name: 'videoInfo', params: { id: items.id.videoId } }"
+          v-for="item in items"
+          :to="{ name: 'videoInfo', params: { id: item.id.videoId } }"
           tabindex="0"
+          class="w-full h-24 md:h-full rounded relative cursor-pointer group bg-center bg-cover block"
           :style="{
-            backgroundImage: `url(${items.snippet.thumbnails.high.url})`,
+            backgroundImage: `url(${item.snippet.thumbnails.high.url})`,
           }"
         >
           <div
@@ -34,8 +33,8 @@
             <div
               class="flex flex-wrap items-center justify-between uppercase text-xs sm:text-sm font-semibold text-white"
             >
-              <p>{{ items.snippet.channelTitle }}</p>
-              <p>{{ items.snippet.title }}</p>
+              <p>{{ item.snippet.channelTitle }}</p>
+              <p>{{ item.snippet.title }}</p>
             </div>
             <div
               class="flex flex-wrap items-center justify-between uppercase text-xs sm:text-sm font-semibold text-white"
@@ -49,12 +48,35 @@
     {{ error }}
   </div>
 </template>
+
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import store from "../store";
 import Loader from "../components/loader.vue";
+import { RouterLink } from "vue-router";
+
+interface VideoItem {
+  id: {
+    videoId: string; // Define the type of videoId
+  };
+  snippet: {
+    channelTitle: string;
+    title: string;
+    description: string;
+    thumbnails: {
+      high: {
+        url: string;
+      };
+    };
+    // Add other properties if needed
+  };
+  // Add other properties if needed
+}
+const items = ref<VideoItem[]>([]);
 const isLoading = computed(() => store.state.isLoading);
-const items = computed(() => store.state.searchedResults.slice(0, 5));
+const slicedItems = computed(() => store.state.searchedResults.slice(0, 5));
 const error = computed(() => store.state.error);
+items.value = slicedItems.value;
 </script>
+
 <style scoped></style>

@@ -1,3 +1,4 @@
+<!-- Testing comments, this will work too.
 <template>
   <div class style="opacity: 1; transform: none">
     <main
@@ -130,3 +131,4 @@ const route = useRoute();
 </script>
 
 <style scoped></style>
+ -->

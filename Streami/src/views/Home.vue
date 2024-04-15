@@ -2,21 +2,20 @@
   <div class="grow" style="opacity: 1; transform: none">
     <main>
       <div
-        class="drag mt-16 lg:mt-[104px] flex overflow-x-scroll  container-class transition-transform duration-300 scroll-snap-type-x-mandatory scroll-smooth "
+        class="drag mt-16 lg:mt-[104px] flex overflow-x-scroll container-class transition-transform duration-300 scroll-snap-type-x-mandatory scroll-smooth"
       >
         <div
           class="relative grid px-0 items-stretch w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-none lg:grid-flow-col gap-4 lg:gap-10 overscroll-x-contain container-class transition-transform duration-300 scroll-snap-type-x-mandatory scroll-smooth"
         >
           <a
             class="hidden lg:grid relative bg-[#D9D9D9] w-[calc(100vw-72.22vw)] h-[calc(100vw-68.7vw)] rounded"
-            v-for="items of items"
-            :key="items.id"
+            v-for="item of items"
           >
             <RouterLink
-              :to="{ name: 'videoInfo', params: { id: items.id.videoId } }"
+              :to="{ name: 'videoInfo', params: { id: item.id.videoId } }"
             >
               <img
-                :src="items.snippet.thumbnails.high.url"
+                :src="item.snippet.thumbnails.high.url"
                 class="rounded object-cover"
                 style="
                   position: absolute;
@@ -32,14 +31,13 @@
 
           <a
             class="lg:hidden bg-[#D9D9D9] w-full rounded"
-            v-for="items of items"
-            :key="items.id"
+            v-for="item of items"
           >
             <RouterLink
-              :to="{ name: 'videoInfo', params: { id: items.id.videoId } }"
+              :to="{ name: 'videoInfo', params: { id: item.id.videoId } }"
             >
               <img
-                :src="items.snippet.thumbnails.high.url"
+                :src="item.snippet.thumbnails.high.url"
                 :width="768"
                 :height="768"
                 class="rounded object-cover"
@@ -81,11 +79,30 @@
     </main>
   </div>
 </template>
-<script setup lang="ts">
-import { computed } from "vue";
-import store from "../store";
 
-const items = computed(() => store.state.searchedResults.slice(0, 5));
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import store from "../store";
+interface VideoItem {
+  id: {
+    videoId: string; // Define the type of videoId
+  };
+  snippet: {
+    channelTitle: string;
+    title: string;
+    description: string;
+    thumbnails: {
+      high: {
+        url: string;
+      };
+    };
+    // Add other properties if needed
+  };
+  // Add other properties if needed
+}
+const items = ref<VideoItem[]>([]);
+const slicedItems = computed(() => store.state.searchedResults.slice(0, 5));
+items.value = slicedItems.value;
 </script>
 
 <style scoped></style>
